@@ -1,7 +1,6 @@
 from decimal import Decimal
 from rest_framework import serializers
 from .models import Product, Collection, Order, OrderItem, Review, Cart, CartItem
-from django.db.models.aggregates import Sum
 
 
 #######################################################################################

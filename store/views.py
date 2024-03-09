@@ -48,7 +48,7 @@ class ProductViewSet(ModelViewSet):
 #############################################################################
 #  COLLECTION SET: http://127.0.0.1:8000/store/collections/
 
-"""Add related_name='products' into the 'collection' field in the Product model"""
+"""Add related_name='order_items' into the 'product' field in the OrderItem model"""
 
 
 class CollectionViewSet(ModelViewSet):
@@ -98,9 +98,11 @@ class ReviewViewSet(ModelViewSet):
 ###############################################################################
 # CART
 
+"""Add related_name='items' into the 'product' field in the CartItem model"""
+
 
 class CartViewSet(CreateModelMixin, RetrieveModelMixin, GenericViewSet):
-    queryset = Cart.objects.all()
+    queryset = Cart.objects.prefetch_related("items__product").all()
     serializer_class = CartSerializer
 
     def get_serialiser_context(self):
