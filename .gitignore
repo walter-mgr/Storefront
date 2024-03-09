@@ -1,0 +1,6 @@
+config.py
+*.pyc
+django1.txt
+django2.txt
+
+*pyc
