@@ -111,10 +111,14 @@ class SimpleProductSerialiser(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     product = SimpleProductSerialiser()
+    total_price = serializers.SerializerMethodField(method_name="get_total_price")
+
+    def get_total_price(self, cart_item: CartItem):
+        return cart_item.quantity * cart_item.product.unit_price
 
     class Meta:
         model = CartItem
-        fields = ["id", "product", "quantity"]
+        fields = ["id", "product", "quantity", "total_price"]
 
     # total_price = serializers.SerializerMethodField(method_name="calculate_total")
     # total_price = serializers.IntegerField()

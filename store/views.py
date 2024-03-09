@@ -100,11 +100,7 @@ class ReviewViewSet(ModelViewSet):
 
 
 class CartViewSet(CreateModelMixin, RetrieveModelMixin, GenericViewSet):
-    queryset = (
-        Cart.objects.prefetch_related("items")
-        # .annotate(total_price=Count("items__quantity"))
-        .all()
-    )
+    queryset = Cart.objects.all()
     serializer_class = CartSerializer
 
     def get_serialiser_context(self):
