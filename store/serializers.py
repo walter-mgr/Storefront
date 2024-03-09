@@ -89,24 +89,53 @@ class ReviewSerializer(serializers.ModelSerializer):
         return Review.objects.create(product_id=product_pk, **validated_data)
 
 
+########################################################################################
+# PRODUCT SIMPLE VERSION
+
+
+class SimpleProductSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ["id", "title", "unit_price", "inventory"]
+
+
+"""
+    total_price = serializers.DecimalField(
+        max_digits=2, decimal_places=2, read_only=True
+    )
+"""
+
+#########################################################################################
+#  CART ITEM
+
+
+class CartItemSerializer(serializers.ModelSerializer):
+    product = SimpleProductSerialiser()
+
+    class Meta:
+        model = CartItem
+        fields = ["id", "product", "quantity"]
+
+    # total_price = serializers.SerializerMethodField(method_name="calculate_total")
+    # total_price = serializers.IntegerField()
+
+
+"""
+    def calculate_total(self, product: Product, items: CartItem):
+        return product.unit_price * items.quantity
+        pass
+"""
+
 #########################################################################################
 # CART
 
 
 class CartSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
+    items = CartItemSerializer(many=True)
 
     class Meta:
         model = Cart
         fields = ["id", "items"]
 
-
-#########################################################################################
-#  CARTITEM
-
-"""
-class CartItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = ["id", "quantity", "cart_id", "product_id"]
-"""
+    # total_price = serializers.IntegerField()

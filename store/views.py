@@ -14,6 +14,7 @@ from .serializers import (
     OrderSerializer,
     ReviewSerializer,
     CartSerializer,
+    CartItemSerializer,
 )
 
 # DJANGO_REST_FRAMEWORK_DOCS = https://www.django-rest-framework.org/
@@ -99,7 +100,11 @@ class ReviewViewSet(ModelViewSet):
 
 
 class CartViewSet(CreateModelMixin, RetrieveModelMixin, GenericViewSet):
-    queryset = Cart.objects.all()
+    queryset = (
+        Cart.objects.prefetch_related("items")
+        # .annotate(total_price=Count("items__quantity"))
+        .all()
+    )
     serializer_class = CartSerializer
 
     def get_serialiser_context(self):
@@ -113,8 +118,11 @@ class CartViewSet(CreateModelMixin, RetrieveModelMixin, GenericViewSet):
 
 """
 class CartItemViewSet(ModelViewSet):
-    serializer_class = CartItemSerializer
+    queryset = CartItem.objects.all()
 
+    serializer_class = CartItemSerializer
+"""
+"""
     def get_queryset(self):
         return Product.objects.filter(product_id=self.kwargs["product_pk"])
 
