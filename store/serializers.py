@@ -1,6 +1,7 @@
 from decimal import Decimal
 from rest_framework import serializers
 from .models import Product, Collection, Order, OrderItem, Review, Cart, CartItem
+from django.db.models.aggregates import Sum
 
 
 #######################################################################################
@@ -99,12 +100,6 @@ class SimpleProductSerialiser(serializers.ModelSerializer):
         fields = ["id", "title", "unit_price", "inventory"]
 
 
-"""
-    total_price = serializers.DecimalField(
-        max_digits=2, decimal_places=2, read_only=True
-    )
-"""
-
 #########################################################################################
 #  CART ITEM
 
@@ -120,26 +115,25 @@ class CartItemSerializer(serializers.ModelSerializer):
         model = CartItem
         fields = ["id", "product", "quantity", "total_price"]
 
-    # total_price = serializers.SerializerMethodField(method_name="calculate_total")
-    # total_price = serializers.IntegerField()
-
-
-"""
-    def calculate_total(self, product: Product, items: CartItem):
-        return product.unit_price * items.quantity
-        pass
-"""
 
 #########################################################################################
 # CART
 
+""" Product -> SimpleProductSerialiser ->  CartItemSerializer -> items
+    'cart.items' returns a Manager Object """
+
 
 class CartSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
-    items = CartItemSerializer(many=True)
+    items = CartItemSerializer(many=True)  # get Product queryset
+    total_price = serializers.SerializerMethodField()
+
+    def get_total_price(self, cart):
+        print(cart.id)
+        return sum(
+            [item.quantity * item.product.unit_price for item in cart.items.all()]
+        )
 
     class Meta:
         model = Cart
-        fields = ["id", "items"]
-
-    # total_price = serializers.IntegerField()
+        fields = ["id", "items", "total_price"]
