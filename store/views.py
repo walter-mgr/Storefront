@@ -98,13 +98,15 @@ class ReviewViewSet(ModelViewSet):
 # CART
 
 
-class CartViewSet(CreateModelMixin, GenericViewSet):
+class CartViewSet(ModelViewSet):
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
 
     def get_serialiser_context(self):
         return {"request": self.request}
 
+
+# 89e4beddd2de4de5b7f8ac59e97d9fb5
 
 ###############################################################################
 # CARTITEM
