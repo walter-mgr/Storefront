@@ -118,18 +118,19 @@ class CartViewSet(
 ###############################################################################
 # TEST CARTS
 
-# 89e4beddd2de4de5b7f8ac59e97d9fb5
-# 6a534217da3c4982b008bf23768e8da3
+# 1. 89e4beddd2de4de5b7f8ac59e97d9fb5
+# 2. 6a534217da3c4982b008bf23768e8da3
 
 ###############################################################################
 # CARTITEM
 
-"""
+
 class CartItemViewSet(ModelViewSet):
     queryset = CartItem.objects.all()
 
     serializer_class = CartItemSerializer
-"""
+
+
 """
     def get_queryset(self):
         return Product.objects.filter(product_id=self.kwargs["product_pk"])
