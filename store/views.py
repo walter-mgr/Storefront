@@ -105,6 +105,7 @@ class ReviewViewSet(ModelViewSet):
 # CART
 
 # http://127.0.0.1:8000/store/carts/
+# DOCUMENTATION GITHUB: https://github.com/alanjds/drf-nested-routers
 
 """Add related_name='items' into the 'product' field in the CartItem model"""
 
@@ -130,16 +131,10 @@ class CartViewSet(
 
 
 class CartItemViewSet(ModelViewSet):
-    queryset = CartItem.objects.all()
     serializer_class = CartItemSerializer
 
-
-"""
     def get_queryset(self):
-        return Cart.objects.filter(cart_id=self.kwargs["cart_pk"])
-"""
+        return CartItem.objects.filter(cart_id=self.kwargs["cart_pk"])
 
-"""
     def get_serializer_context(self):
         return {"cart_pk": self.kwargs["cart_pk"]}
-"""
