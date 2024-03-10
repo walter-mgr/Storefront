@@ -88,6 +88,8 @@ class OrderViewSet(ReadOnlyModelViewSet):
 ###############################################################################
 # REVIEW / NESTED IN PRODUCT
 
+"""Add related_name='reviews' into the 'product' field in the Review model"""
+
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
@@ -101,6 +103,8 @@ class ReviewViewSet(ModelViewSet):
 
 ###############################################################################
 # CART
+
+# http://127.0.0.1:8000/store/carts/
 
 """Add related_name='items' into the 'product' field in the CartItem model"""
 
@@ -127,14 +131,15 @@ class CartViewSet(
 
 class CartItemViewSet(ModelViewSet):
     queryset = CartItem.objects.all()
-
     serializer_class = CartItemSerializer
 
 
 """
     def get_queryset(self):
-        return Product.objects.filter(product_id=self.kwargs["product_pk"])
+        return Cart.objects.filter(cart_id=self.kwargs["cart_pk"])
+"""
 
+"""
     def get_serializer_context(self):
-        return {"request": self.request}
+        return {"cart_pk": self.kwargs["cart_pk"]}
 """
