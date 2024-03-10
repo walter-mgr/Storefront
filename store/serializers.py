@@ -96,7 +96,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 class SimpleProductSerialiser(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ["id", "title", "unit_price", "inventory"]
+        fields = ["id", "title", "unit_price"]
 
 
 #########################################################################################
@@ -114,10 +114,12 @@ class CartItemSerializer(serializers.ModelSerializer):
         model = CartItem
         fields = ["id", "product", "quantity", "total_price"]
 
+
+"""
     def create(self, validated_data):
         product_pk = self.context["product_pk"]
         return Product.objects.create(product_id=product_pk, **validated_data)
-
+"""
 
 #########################################################################################
 # CART
@@ -140,3 +142,15 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ["id", "items", "total_price"]
+
+
+#########################################################################################
+# ADD ITEM TO THE CART
+
+
+class AddCartItemSerializer(serializers.ModelSerializer):
+    product_id = serializers.IntegerField()
+
+    class Meta:
+        model = CartItem
+        fields = ["id", "product_id", "quantity"]
