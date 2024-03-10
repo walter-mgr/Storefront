@@ -105,7 +105,6 @@ class SimpleProductSerialiser(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     product = SimpleProductSerialiser()
-    # product = ProductSerializer()
 
     total_price = serializers.SerializerMethodField(method_name="get_total_price")
 
