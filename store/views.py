@@ -132,7 +132,6 @@ class CartViewSet(
 
 
 class CartItemViewSet(ModelViewSet):
-    # serializer_class = CartItemSerializer
 
     def get_serializer_class(self):
         if self.request.method == "POST":
