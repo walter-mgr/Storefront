@@ -20,6 +20,7 @@ from .serializers import (
     CartSerializer,
     CartItemSerializer,
     AddCartItemSerializer,
+    UpdateCartItemSerializer,
 )
 
 # DJANGO_REST_FRAMEWORK_DOCS = https://www.django-rest-framework.org/
@@ -126,20 +127,27 @@ class CartViewSet(
 
 # 1. 89e4beddd2de4de5b7f8ac59e97d9fb5
 # 2. 6a534217da3c4982b008bf23768e8da3
+# 3. a784f2bda0ec4c3d92ad94e5b96388b9
 
 ###############################################################################
 # CART ITEM, ADD ITEM TO THE CART
 
 
 class CartItemViewSet(ModelViewSet):
+    http_method_names = ["get", "post", "patch", "delete"]
 
     def get_serializer_class(self):
         if self.request.method == "POST":
             return AddCartItemSerializer
+        elif self.request.method == "PATCH":
+            return UpdateCartItemSerializer
         return CartItemSerializer
 
     def get_serializer_context(self):
-        return {"cart_id": self.kwargs["cart_pk"]}
+        return {
+            "cart_id": self.kwargs["cart_pk"],
+            # "product_id": self.kwargs["product_pk"],
+        }
 
     def get_queryset(self):
         return CartItem.objects.select_related("product").filter(
