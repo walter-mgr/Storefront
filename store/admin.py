@@ -1,9 +1,10 @@
 from typing import Any
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.db.models import Count
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
 from django.urls import reverse
+from django.utils.translation import ngettext
 from django.utils.html import format_html
 from django.utils.http import urlencode
 from . import models
@@ -64,11 +65,36 @@ class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ["promotions"]
 
     # Page
-    list_display = ["title", "unit_price", "inventory_status", "inventory"]
+    actions = ["clear_inventory"]
+    list_display = [
+        "id",
+        "title",
+        "unit_price",
+        "inventory_status",
+        "inventory",
+        "collection_title",
+    ]
     list_editable = ["unit_price", "inventory"]
     list_filter = ["collection", InventoryFilter]
     list_per_page = 10
     list_select_related = ["collection"]
+
+    def collection_title(self, product: models.Product):
+        return product.collection
+
+    @admin.action(description="Clear inventory")
+    def clear_inventory(self, request, queryset):
+        updated_count = queryset.update(inventory=0)
+        self.message_user(
+            request,
+            ngettext(
+                "%d product was successfully updated",
+                "%d products were successfully updated",
+                updated_count,
+            )
+            % updated_count,
+            messages.SUCCESS,
+        )
 
     # Computed field -> target field: "inventory"
     @admin.display(ordering="inventory")
