@@ -89,6 +89,7 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ["full_name", "membership"]
     list_editable = ["membership"]
     list_per_page = 10
+    search_fields = ["first_name__istartswith", "last_name__istartswith"]
 
     @admin.display(description="full_name")
     def full_name(self, customer: models.Customer):
