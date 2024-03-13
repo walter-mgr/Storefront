@@ -78,3 +78,27 @@ class ProductAdmin(admin.ModelAdmin):
         if product.inventory >= 5 and product.inventory < 15:
             return "MIDDLE"
         return "OK"
+
+
+######################################################################################
+# CUSTOMER
+
+
+@admin.register(models.Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ["full_name", "membership"]
+    list_editable = ["membership"]
+    list_per_page = 10
+
+    @admin.display(description="full_name")
+    def full_name(self, customer: models.Customer):
+        return f"{customer.first_name} {customer.last_name}"
+
+
+######################################################################################
+# ORDER
+
+
+@admin.register(models.Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ["id", "placed_at", "customer"]
