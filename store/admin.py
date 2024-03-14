@@ -66,18 +66,10 @@ class InventoryFilter(admin.SimpleListFilter):
 # TODO: add links to the Collection
 
 
-class TagInline(GenericTabularInline):
-    autocomplete_fields = ["tag"]
-    model = TaggedItem
-    extra = 0
-    min_num = 1
-
-
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     # Form
     autocomplete_fields = ["collection"]
-    inlines = [TagInline]
     prepopulated_fields = {"slug": ["title"]}
     readonly_fields = ["promotions"]
     search_fields = ["title"]
