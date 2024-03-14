@@ -1,5 +1,6 @@
 from typing import Any
 from django.contrib import admin, messages
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.db.models import Count
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
@@ -8,11 +9,13 @@ from django.utils.translation import ngettext
 from django.utils.html import format_html
 from django.utils.http import urlencode
 from .models import Collection, Product, Order, OrderItem, Customer
+from tags.models import TaggedItem
 
 
 ###########################################################################################
 # COLLECTION
-###########################################################################################
+
+
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "products_count"]
@@ -36,11 +39,10 @@ class CollectionAdmin(admin.ModelAdmin):
 
 ###########################################################################################
 # PRODUCT
-###########################################################################################
 
 
 # ========================
-# Custom Filter
+# Product Custom Filter
 # ========================
 
 
@@ -60,10 +62,22 @@ class InventoryFilter(admin.SimpleListFilter):
             return queryset.filter(inventory__gte=15)
 
 
+# ============================================
+# TODO: add links to the Collection
+
+
+class TagInline(GenericTabularInline):
+    autocomplete_fields = ["tag"]
+    model = TaggedItem
+    extra = 0
+    min_num = 1
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     # Form
     autocomplete_fields = ["collection"]
+    inlines = [TagInline]
     prepopulated_fields = {"slug": ["title"]}
     readonly_fields = ["promotions"]
     search_fields = ["title"]
