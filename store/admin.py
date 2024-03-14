@@ -7,13 +7,13 @@ from django.urls import reverse
 from django.utils.translation import ngettext
 from django.utils.html import format_html
 from django.utils.http import urlencode
-from . import models
+from .models import Collection, Product, Order, OrderItem, Customer
 
 
 ###########################################################################################
 # COLLECTION
 ###########################################################################################
-@admin.register(models.Collection)
+@admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "products_count"]
 
@@ -59,10 +59,11 @@ class InventoryFilter(admin.SimpleListFilter):
             return queryset.filter(inventory__gte=15)
 
 
-@admin.register(models.Product)
+@admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     # Form
     readonly_fields = ["promotions"]
+    prepopulated_fields = {"slug": ["title"]}
 
     # Page
     actions = ["clear_inventory"]
@@ -79,7 +80,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_per_page = 10
     list_select_related = ["collection"]
 
-    def collection_title(self, product: models.Product):
+    def collection_title(self, product: Product):
         return product.collection
 
     @admin.action(description="Clear inventory")
@@ -98,7 +99,7 @@ class ProductAdmin(admin.ModelAdmin):
 
     # Computed field -> target field: "inventory"
     @admin.display(ordering="inventory")
-    def inventory_status(self, product: models.Product):
+    def inventory_status(self, product: Product):
         if product.inventory < 5:
             return "LOW"
         if product.inventory >= 5 and product.inventory < 15:
@@ -110,7 +111,7 @@ class ProductAdmin(admin.ModelAdmin):
 # CUSTOMER
 
 
-@admin.register(models.Customer)
+@admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ["full_name", "membership"]
     list_editable = ["membership"]
@@ -118,7 +119,7 @@ class CustomerAdmin(admin.ModelAdmin):
     search_fields = ["first_name__istartswith", "last_name__istartswith"]
 
     @admin.display(description="full_name")
-    def full_name(self, customer: models.Customer):
+    def full_name(self, customer: Customer):
         return f"{customer.first_name} {customer.last_name}"
 
 
@@ -126,6 +127,6 @@ class CustomerAdmin(admin.ModelAdmin):
 # ORDER
 
 
-@admin.register(models.Order)
+@admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ["id", "placed_at", "customer"]
