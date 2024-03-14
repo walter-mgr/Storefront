@@ -1,7 +1,7 @@
 from typing import Any
 from django.contrib import admin, messages
 from django.contrib.contenttypes.admin import GenericTabularInline
-from django.db.models import Count
+from django.db.models import Count, F
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
 from django.urls import reverse
@@ -122,7 +122,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ["full_name", "membership"]
+    list_display = ["full_name", "membership", "orders"]
     list_editable = ["membership"]
     list_per_page = 10
     search_fields = ["last_name__istartswith"]
@@ -130,6 +130,15 @@ class CustomerAdmin(admin.ModelAdmin):
     @admin.display(description="full_name")
     def full_name(self, customer: Customer):
         return f"{customer.first_name} {customer.last_name}"
+
+    @admin.display(ordering="orders")
+    def orders(self, order):
+        return order.orders
+
+    def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+        return super().get_queryset(request).annotate(orders=Count("order"))
+
+    # TODO: Calculate total sum of money of all orders that each Customer has made
 
 
 ######################################################################################
