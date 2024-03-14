@@ -16,6 +16,7 @@ from .models import Collection, Product, Order, OrderItem, Customer
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "products_count"]
+    search_fields = ["title"]
 
     # Add links to the product_count field
     @admin.display(description="products_count")
@@ -62,8 +63,9 @@ class InventoryFilter(admin.SimpleListFilter):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     # Form
-    readonly_fields = ["promotions"]
+    autocomplete_fields = ["collection"]
     prepopulated_fields = {"slug": ["title"]}
+    readonly_fields = ["promotions"]
 
     # Page
     actions = ["clear_inventory"]
@@ -116,7 +118,7 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ["full_name", "membership"]
     list_editable = ["membership"]
     list_per_page = 10
-    search_fields = ["first_name__istartswith", "last_name__istartswith"]
+    search_fields = ["last_name__istartswith"]
 
     @admin.display(description="full_name")
     def full_name(self, customer: Customer):
@@ -129,4 +131,8 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
+    # Form
+    autocomplete_fields = ["customer"]
+
+    # Page
     list_display = ["id", "placed_at", "customer"]
