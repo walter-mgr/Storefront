@@ -66,6 +66,7 @@ class ProductAdmin(admin.ModelAdmin):
     autocomplete_fields = ["collection"]
     prepopulated_fields = {"slug": ["title"]}
     readonly_fields = ["promotions"]
+    search_fields = ["title"]
 
     # Page
     actions = ["clear_inventory"]
@@ -126,6 +127,18 @@ class CustomerAdmin(admin.ModelAdmin):
 
 
 ######################################################################################
+# ORDER ITEM
+
+
+class OrderItemInline(admin.TabularInline):
+    autocomplete_fields = ["product"]
+    model = OrderItem
+    min_num = 1
+    max_num = 10
+    extra = 0
+
+
+###########################################
 # ORDER
 
 
@@ -133,6 +146,9 @@ class CustomerAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     # Form
     autocomplete_fields = ["customer"]
+    inlines = [OrderItemInline]
 
     # Page
     list_display = ["id", "placed_at", "customer"]
+    list_per_page = 10
+    ordering = ["-placed_at"]
