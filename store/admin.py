@@ -122,14 +122,19 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ["full_name", "membership", "orders"]
+    autocomplete_fields = ["user"]
+    list_display = ["first_name", "last_name", "membership", "orders"]
     list_editable = ["membership"]
     list_per_page = 10
-    search_fields = ["last_name__istartswith"]
+    list_select_related = ["user"]
+    ordering = ["user__first_name", "user__last_name"]
+    search_fields = ["first_name__istartswith", "last_name__istartswith"]
 
+    """
     @admin.display(description="full_name")
     def full_name(self, customer: Customer):
-        return f"{customer.first_name} {customer.last_name}"
+        return f"{customer.user.first_name} {customer.user.last_name}"
+"""
 
     @admin.display(ordering="orders")
     def orders(self, order):
@@ -138,7 +143,8 @@ class CustomerAdmin(admin.ModelAdmin):
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         return super().get_queryset(request).annotate(orders=Count("order"))
 
-    # TODO: Calculate total sum of money of all orders that each Customer has made
+
+# TODO: Calculate total sum of money of all orders that each Customer has made
 
 
 ######################################################################################
@@ -164,6 +170,6 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
 
     # Page
-    list_display = ["id", "placed_at", "customer"]
+    list_display = ["placed_at", "customer"]
     list_per_page = 10
     ordering = ["-placed_at"]
