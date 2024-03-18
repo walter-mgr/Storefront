@@ -9,6 +9,7 @@ mysqlclient = "*"
 drf-nested-routers = "*"
 djangorestframework = "*"
 django-filter = "*"
+djoser = "*"
 
 [dev-packages]
 
