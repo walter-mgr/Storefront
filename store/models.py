@@ -99,6 +99,9 @@ class Order(models.Model):
     def __str__(self) -> str:
         return self.payment_status
 
+    class Meta:
+        permissions = [("cancel_order", "Can cancel order")]
+
 
 class OrderItem(models.Model):
     quantity = models.PositiveSmallIntegerField()
