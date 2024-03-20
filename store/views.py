@@ -5,13 +5,23 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.mixins import (
     CreateModelMixin,
     RetrieveModelMixin,
+    UpdateModelMixin,
     DestroyModelMixin,
 )
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet, ReadOnlyModelViewSet
 from .filters import ProductFilter
-from .models import Product, Collection, Order, OrderItem, Review, Cart, CartItem
+from .models import (
+    Product,
+    Collection,
+    Order,
+    OrderItem,
+    Review,
+    Cart,
+    CartItem,
+    Customer,
+)
 from .serializers import (
     ProductSerializer,
     CollectionSerializer,
@@ -21,6 +31,7 @@ from .serializers import (
     CartItemSerializer,
     AddCartItemSerializer,
     UpdateCartItemSerializer,
+    CustomerSerializer,
 )
 
 # DJANGO_REST_FRAMEWORK_DOCS = https://www.django-rest-framework.org/
@@ -152,3 +163,16 @@ class CartItemViewSet(ModelViewSet):
         return CartItem.objects.select_related("product").filter(
             cart_id=self.kwargs["cart_pk"]
         )
+
+
+################################################################################
+
+
+class CustomerViewSet(
+    CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet
+):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+
+    def get_serialiser_context(self):
+        return {"request": self.request}
