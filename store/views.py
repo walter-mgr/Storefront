@@ -174,5 +174,5 @@ class CustomerViewSet(
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
 
-    def get_serialiser_context(self):
+    def get_serializer_context(self):
         return {"request": self.request}
