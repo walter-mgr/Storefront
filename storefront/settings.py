@@ -77,7 +77,12 @@ REST_FRAMEWORK = {
     ),
 }
 
-DJOSER = {"SERIALIZERS": {"user_create": "core.serializers.UserCreateSerializer"}}
+DJOSER = {
+    "SERIALIZERS": {
+        "user_create": "core.serializers.UserCreateSerializer",
+        "current_user": "djoser.serializers.UserSerializer",
+    }
+}
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
