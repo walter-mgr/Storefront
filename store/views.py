@@ -1,5 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Count, F, Q, ExpressionWrapper
+from rest_framework.decorators import action
 from rest_framework import status
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.mixins import (
@@ -173,6 +174,11 @@ class CustomerViewSet(
 ):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+
+    @action(detail=False)
+    def me(self, request):
+
+        return Response(request.user.id)
 
     def get_serializer_context(self):
         return {"request": self.request}
