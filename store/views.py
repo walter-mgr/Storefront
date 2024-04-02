@@ -177,8 +177,10 @@ class CustomerViewSet(
 
     @action(detail=False)
     def me(self, request):
-
+        # customer = Customer.objects.get(user_id=request.user.id)
+        # serializer = CustomerSerializer(customer)
+        # return Response(serializer.data)
         return Response(request.user.id)
 
-    def get_serializer_context(self):
-        return {"request": self.request}
+    # def get_serializer_context(self):
+    # return {"request": self.request}
