@@ -19,6 +19,7 @@ products_router.register(
 carts_router = routers.NestedDefaultRouter(router, "carts", lookup="cart")  #
 carts_router.register("items", viewset=views.CartItemViewSet, basename="cart-items")
 
+
 urlpatterns = [
     path(r"", include(router.urls)),
     path(r"", include(products_router.urls)),
