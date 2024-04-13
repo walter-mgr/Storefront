@@ -104,9 +104,6 @@ class OrderViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
-    def get_serializer_context(self):
-        return {"request": self.request}
-
 
 ###############################################################################
 # REVIEW / NESTED IN PRODUCT

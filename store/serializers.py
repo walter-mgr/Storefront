@@ -179,6 +179,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 #####################################################################################
 # ORDER
 class OrderItemSerializer(serializers.ModelSerializer):
+    product = SimpleProductSerialiser()
 
     class Meta:
         model = OrderItem
