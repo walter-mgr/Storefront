@@ -99,7 +99,7 @@ class CollectionViewSet(ModelViewSet):
 # ORDER LIST: http://127.0.0.1:8000/store/orders/
 
 
-class OrderViewSet(ReadOnlyModelViewSet):
+class OrderViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
