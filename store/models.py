@@ -109,7 +109,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.PROTECT, related_name="order_items"
     )
-    order = models.ForeignKey(Order, on_delete=models.PROTECT)
+    order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name="items")
 
 
 class Cart(models.Model):

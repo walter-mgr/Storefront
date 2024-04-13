@@ -97,6 +97,7 @@ class CollectionViewSet(ModelViewSet):
 
 ###############################################################################
 # ORDER LIST: http://127.0.0.1:8000/store/orders/
+"""Add related_name='items' into the 'order' field in the OrderItem model"""
 
 
 class OrderViewSet(ModelViewSet):
