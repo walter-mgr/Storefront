@@ -18,6 +18,7 @@ from tags.models import TaggedItem
 
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
+    readonly_fields = ["featured_product"]
     list_display = ["id", "title", "products_count"]
     search_fields = ["title"]
 

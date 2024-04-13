@@ -60,28 +60,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = [
-            "id",
-            "placed_at",
-            "product",
-            "quantity",
-            "unit_price",
-            "total",
-            "order_id",
-        ]
-
-    product = serializers.StringRelatedField()
-    quantity = serializers.IntegerField(read_only=True)
-    unit_price = serializers.DecimalField(
-        max_digits=6, decimal_places=2, read_only=True
-    )
-    total = serializers.SerializerMethodField(method_name="calculate_total")
-    order_id = serializers.IntegerField(read_only=True)
-
-    def calculate_total(self, obj: OrderItem):
-        if obj.product == None:
-            return 0
-        return obj.quantity * obj.unit_price
+        fields = ["id", "customer_id", "placed_at", "payment_status"]
 
 
 #########################################################################################

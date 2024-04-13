@@ -100,7 +100,7 @@ class CollectionViewSet(ModelViewSet):
 
 
 class OrderViewSet(ReadOnlyModelViewSet):
-    queryset = OrderItem.objects.all()
+    queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
     def get_serializer_context(self):
