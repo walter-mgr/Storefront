@@ -192,3 +192,14 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ["id", "customer_id", "placed_at", "payment_status", "items"]
+
+
+class CreateOrderSerializer(serializers.Serializer):
+    cart_id = serializers.UUIDField()
+
+    def save(self, **kwargs):
+
+        (customer, created) = Customer.objects.get_or_create(
+            user_id=self.context["user_id"]
+        )
+        return Order.objects.create(customer=customer)

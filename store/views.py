@@ -33,6 +33,7 @@ from .serializers import (
     ProductSerializer,
     CollectionSerializer,
     OrderSerializer,
+    CreateOrderSerializer,
     ReviewSerializer,
     CartSerializer,
     CartItemSerializer,
@@ -93,25 +94,6 @@ class CollectionViewSet(ModelViewSet):
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
         return super().destroy(request, *args, **kwargs)
-
-
-###############################################################################
-# ORDER LIST: http://127.0.0.1:8000/store/orders/
-"""Add related_name='items' into the 'order' field in the OrderItem model"""
-
-
-class OrderViewSet(ModelViewSet):
-    serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        user = self.request.user
-
-        if user.is_staff:
-            return Order.objects.all()
-
-        customer_id, _ = Customer.objects.only("id").get_or_create(user_id=user.pk)
-        return Order.objects.filter(customer_id=customer_id)
 
 
 ###############################################################################
@@ -200,3 +182,33 @@ class CustomerViewSet(ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data)
+
+
+###############################################################################
+# ORDER LIST: http://127.0.0.1:8000/store/orders/
+# New test cart ID: 570cd5f4-09ef-470d-9348-dff0d8ff3a63
+"""Add related_name='items' into the 'order' field in the OrderItem model"""
+
+
+class OrderViewSet(ModelViewSet):
+
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return CreateOrderSerializer
+        return OrderSerializer
+
+    def get_serializer_context(self):
+        return {"user_id": self.request.user.pk}
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.is_staff:
+            return Order.objects.all()
+
+        (customer_id, cerated) = Customer.objects.only("id").get_or_create(
+            user_id=user.pk
+        )
+        return Order.objects.filter(customer_id=customer_id)
