@@ -187,6 +187,7 @@ class CustomerViewSet(ModelViewSet):
 ###############################################################################
 # ORDER LIST: http://127.0.0.1:8000/store/orders/
 # New test cart ID: 570cd5f4-09ef-470d-9348-dff0d8ff3a63
+# New test cart ID: a91539f7-3659-47be-88ac-03819d223c94 - empty
 """Add related_name='items' into the 'order' field in the OrderItem model"""
 
 
