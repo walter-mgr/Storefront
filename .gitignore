@@ -1,6 +1,3 @@
 config.py
+*.txt
 *.pyc
-django1.txt
-django2.txt
-
-*pyc
