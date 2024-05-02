@@ -3,14 +3,15 @@ from django.db import transaction
 from rest_framework import serializers
 from .signals import order_created
 from .models import (
-    Product,
-    Collection,
-    Order,
-    OrderItem,
-    Review,
     Cart,
     CartItem,
+    Collection,
     Customer,
+    Order,
+    OrderItem,
+    Product,
+    ProductImage,
+    Review,
 )
 
 
@@ -56,6 +57,20 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 #########################################################################################
+#  PRODUCT IMAGE
+
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ["id", "image"]
+
+    def create(self, validated_data):
+        product_id = self.context["product_id"]
+        return ProductImage.objects.create(product_id=product_id, **validated_data)
+
+
+#########################################################################################
 # REVIEW
 
 
@@ -65,8 +80,8 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ["id", "date", "name", "description"]
 
     def create(self, validated_data):
-        product_pk = self.context["product_pk"]
-        return Review.objects.create(product_id=product_pk, **validated_data)
+        product_id = self.context["product_id"]
+        return Review.objects.create(product_id=product_id, **validated_data)
 
 
 ########################################################################################

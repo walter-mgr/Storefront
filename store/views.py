@@ -19,6 +19,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet, ReadOnlyModelViewSet
 from .filters import ProductFilter
 from .models import (
+    ProductImage,
     Product,
     Collection,
     Order,
@@ -30,17 +31,18 @@ from .models import (
 )
 from .permissions import IsAdminOrReadOnly
 from .serializers import (
-    ProductSerializer,
-    CollectionSerializer,
-    OrderSerializer,
-    CreateOrderSerializer,
-    UpdateOrderSerializer,
-    ReviewSerializer,
+    AddCartItemSerializer,
     CartSerializer,
     CartItemSerializer,
-    AddCartItemSerializer,
-    UpdateCartItemSerializer,
+    CollectionSerializer,
+    CreateOrderSerializer,
     CustomerSerializer,
+    OrderSerializer,
+    ProductSerializer,
+    ProductImageSerializer,
+    ReviewSerializer,
+    UpdateOrderSerializer,
+    UpdateCartItemSerializer,
 )
 
 # DJANGO_REST_FRAMEWORK_DOCS = https://www.django-rest-framework.org/
@@ -97,6 +99,22 @@ class CollectionViewSet(ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
 
+###################################################################################
+# PRODUCT IMAGE / NESTED IN  PRODUCT
+
+
+class ProductImageViewSet(ModelViewSet):
+    serializer_class = ProductImageSerializer
+
+    def get_queryset(self):
+        return ProductImage.objects.select_related("product").filter(
+            product_id=self.kwargs["product_pk"]
+        )
+
+    def get_serializer_context(self):
+        return {"product_id": self.kwargs["product_pk"]}
+
+
 ###############################################################################
 # REVIEW / NESTED IN PRODUCT
 
@@ -110,7 +128,7 @@ class ReviewViewSet(ModelViewSet):
         return Review.objects.filter(product_id=self.kwargs["product_pk"])
 
     def get_serializer_context(self):
-        return {"product_pk": self.kwargs["product_pk"]}
+        return {"product_id": self.kwargs["product_pk"]}
 
 
 ###############################################################################
