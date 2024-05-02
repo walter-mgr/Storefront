@@ -27,35 +27,6 @@ class CollectionSerializer(serializers.ModelSerializer):
     products_count = serializers.IntegerField(read_only=True)
 
 
-#######################################################################################
-# PRODUCT
-
-
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = [
-            "id",
-            "title",
-            "slug",
-            "description",
-            "unit_price",
-            "price_with_tax",
-            "inventory",
-            "collection",
-            "order_id",
-        ]
-
-    price_with_tax = serializers.SerializerMethodField(method_name="calculate_tax")
-    collection = serializers.HyperlinkedRelatedField(
-        queryset=Collection.objects.all(), view_name="collection-detail"
-    )
-    order_id = serializers.IntegerField(read_only=True)
-
-    def calculate_tax(self, product: Product):
-        return product.unit_price * Decimal(1.2)
-
-
 #########################################################################################
 #  PRODUCT IMAGE
 
@@ -68,6 +39,38 @@ class ProductImageSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         product_id = self.context["product_id"]
         return ProductImage.objects.create(product_id=product_id, **validated_data)
+
+
+#######################################################################################
+# PRODUCT
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    images = ProductImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Product
+        fields = [
+            "id",
+            "title",
+            "slug",
+            "description",
+            "unit_price",
+            "price_with_tax",
+            "inventory",
+            "collection",
+            "order_id",
+            "images",
+        ]
+
+    price_with_tax = serializers.SerializerMethodField(method_name="calculate_tax")
+    collection = serializers.HyperlinkedRelatedField(
+        queryset=Collection.objects.all(), view_name="collection-detail"
+    )
+    order_id = serializers.IntegerField(read_only=True)
+
+    def calculate_tax(self, product: Product):
+        return product.unit_price * Decimal(1.2)
 
 
 #########################################################################################
