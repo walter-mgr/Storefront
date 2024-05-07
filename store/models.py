@@ -45,6 +45,9 @@ class ProductImage(models.Model):
     )
     image = models.ImageField(upload_to="store/images", validators=[validate_file_size])
 
+    def __str__(self) -> str:
+        return f"{self.product}"
+
 
 class Customer(models.Model):
     MEMBERSHIP_BRONZE = "B"

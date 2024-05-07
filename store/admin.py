@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils.translation import ngettext
 from django.utils.html import format_html
 from django.utils.http import urlencode
-from .models import Collection, Product, Order, OrderItem, Customer
+from .models import Collection, Customer, Product, ProductImage, Order, OrderItem
 from tags.models import TaggedItem
 
 
@@ -67,10 +67,22 @@ class InventoryFilter(admin.SimpleListFilter):
 # TODO: add links to the Collection
 
 
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 1
+    readonly_fields = ["thumbnail"]
+
+    def thumbnail(self, instance: ProductImage):
+        if instance.image.name != "":
+            return format_html(f"<img src='{instance.image.url}' class='thumbnail' />")
+        return ""
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     # Form
     autocomplete_fields = ["collection"]
+    inlines = [ProductImageInline]
     prepopulated_fields = {"slug": ["title"]}
     readonly_fields = ["promotions"]
     search_fields = ["title"]
@@ -115,6 +127,9 @@ class ProductAdmin(admin.ModelAdmin):
         if product.inventory >= 5 and product.inventory < 15:
             return "MIDDLE"
         return "OK"
+
+    class Media:
+        css = {"all": ["store/styles.css"]}
 
 
 ######################################################################################
