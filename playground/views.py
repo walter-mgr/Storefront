@@ -3,8 +3,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from store.models import Customer
 
-
-# Create your views here.
+"""
+def say_hello(request):
+    # return HttpResponse("ok")
+    return render(request, "hello.html", {"name": "Walter"})
+"""
 
 """
 def say_hello(request):
@@ -41,13 +44,12 @@ def say_hello(request):
             "subject",
             "message",
             "from.fake@dev.com",
-            ["bob_1@dev.com", "bob_2@dev.com"],
+            ["bob_1@dev.com", "bob_2@dev.com", "bob_3@dev.com"],
         )
         message.attach_file("playground/static/images/dog.jpg")
         message.send()
 
     except BadHeaderError:
-        # pass
         return HttpResponse("Invalid header found.")
 
     return render(request, "hello.html", {"name": "Walter"})
