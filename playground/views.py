@@ -1,7 +1,10 @@
-from django.core.mail import send_mail, mail_admins, EmailMessage, BadHeaderError
+# from django.core.mail import send_mail, mail_admins, EmailMessage, BadHeaderError
 from django.shortcuts import render
-from django.http import HttpResponse
-from templated_mail.mail import BaseEmailMessage
+from .tasks import notify_customers
+
+from django.http import HttpResponse, JsonResponse
+
+# from templated_mail.mail import BaseEmailMessage
 
 """
 def say_hello(request):
@@ -55,7 +58,7 @@ def say_hello(request):
     return render(request, "hello.html", {"name": "Walter"})
 """
 
-
+"""
 def say_hello(request):
     try:
         message = BaseEmailMessage(
@@ -67,3 +70,17 @@ def say_hello(request):
         return HttpResponse("Invalid header found.")
 
     return render(request, "emails/email.html", {"name": "Walter"})
+"""
+
+
+def say_hello(request):
+
+    notify_customers.delay("Ok")
+    return render(request, "hello.html", {"name": "Walter"})
+
+
+"""
+def my_view(request):
+    task_result = my_task.delay(10, 20)
+    return JsonResponse({"task_id": task_result.id})
+"""
