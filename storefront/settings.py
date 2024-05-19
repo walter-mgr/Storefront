@@ -192,3 +192,8 @@ EMAIL_PORT = 2525
 DEFAULT_FROM_EMAIL = "from@dev.com"
 
 ADMINS = [("Admin", "fake.admin@dev.com")]
+
+# https://djangocentral.com/how-to-use-celery-with-django/#celery-broker
+
+CELERY_BROKER_URL = "redis://localhost:6379/1"  # Replace with your Redis URL
+# CELERY_RESULT_BACKEND = "redis://localhost:6379"  # Replace with your Redis URL
