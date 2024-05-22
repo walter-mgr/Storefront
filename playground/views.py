@@ -79,7 +79,6 @@ def say_hello(request):
 
 def say_hello(request):
 
-    notify_customers.delay("Hello!")
-    # hello.delay()
+    notify_customers.delay("Notify customers")
 
     return render(request, "hello.html", {"name": "Walter"})
