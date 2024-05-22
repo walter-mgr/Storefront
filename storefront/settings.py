@@ -14,6 +14,8 @@ import os
 from pathlib import Path
 from config import SQL_PASSWORD
 from datetime import timedelta
+from celery.schedules import crontab
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -196,4 +198,14 @@ ADMINS = [("Admin", "fake.admin@dev.com")]
 # https://djangocentral.com/how-to-use-celery-with-django/#celery-broker
 
 CELERY_BROKER_URL = "redis://localhost:6379/1"  # Replace with your Redis URL
-# CELERY_RESULT_BACKEND = "redis://localhost:6379"  # Replace with your Redis URL
+CELERY_BEAT_SCHEDULE = {
+    "notify_customers": {
+        "task": "playground.tasks.notify_customers",
+        "schedule": 5,  # sec
+        "args": ["Hello world"],
+    }
+}
+
+# Optional settings from Celery docs
+CELERY_RESULT_BACKEND = "redis://localhost:6379"  # Replace with your Redis URL
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True

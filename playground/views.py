@@ -1,10 +1,14 @@
 # from django.core.mail import send_mail, mail_admins, EmailMessage, BadHeaderError
+# from templated_mail.mail import BaseEmailMessage
+
 from django.shortcuts import render
+
 from .tasks import notify_customers
+
+# from .tasks import hello
 
 from django.http import HttpResponse, JsonResponse
 
-# from templated_mail.mail import BaseEmailMessage
 
 """
 def say_hello(request):
@@ -75,12 +79,7 @@ def say_hello(request):
 
 def say_hello(request):
 
-    notify_customers.delay("Ok")
+    notify_customers.delay("Hello!")
+    # hello.delay()
+
     return render(request, "hello.html", {"name": "Walter"})
-
-
-"""
-def my_view(request):
-    task_result = my_task.delay(10, 20)
-    return JsonResponse({"task_id": task_result.id})
-"""
