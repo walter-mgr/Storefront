@@ -52,7 +52,9 @@ class TestRetrieveCollection:
     def test_if_collection__exists__returns_200(self, api_client):
         # Arrange
         collection = baker.make(Collection)
+        collection = baker.make(Collection)
 
+        response = api_client.get(f"/store/collections/{collection.id}/")
         response = api_client.get(f"/store/collections/{collection.id}/")
 
         assert response.status_code == status.HTTP_200_OK
