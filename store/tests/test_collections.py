@@ -1,6 +1,7 @@
 from rest_framework import status
 import pytest
 from store.models import Collection
+from model_bakery import baker
 
 # AAA (Arrange, Act, Assert)
 
@@ -46,17 +47,17 @@ class TestCreateCollection:
         assert response.data["id"] > 0
 
 
-# Two scenarious:
-# 1. The collection exists -> 200, collection shoud be in the body of the response
-# 2. The collection doesn't exist -> 404
-
-
 @pytest.mark.django_db
 class TestRetrieveCollection:
     def test_if_collection__exists__returns_200(self, api_client):
         # Arrange
-        response = api_client.get("/store/collections/", {"title": "a"})
+        collection = baker.make(Collection)
 
-        Collection.objects.create(title="a")
+        response = api_client.get(f"/store/collections/{collection.id}/")
 
         assert response.status_code == status.HTTP_200_OK
+        assert response.data == {
+            "id": collection.id,
+            "title": collection.title,
+            "products_count": 0,
+        }
