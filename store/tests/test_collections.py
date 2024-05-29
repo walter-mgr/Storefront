@@ -1,6 +1,7 @@
 from rest_framework import status
 import pytest
-from store.models import Collection
+from store.models import Collection, Product
+from model_bakery import baker
 
 # AAA (Arrange, Act, Assert)
 
@@ -55,8 +56,10 @@ class TestCreateCollection:
 class TestRetrieveCollection:
     def test_if_collection__exists__returns_200(self, api_client):
         # Arrange
-        response = api_client.get("/store/collections/", {"title": "a"})
+        collection = baker.make(Collection)
 
-        Collection.objects.create(title="a")
+        response = api_client.get(f"/store/collections/{collection.id}/")
 
         assert response.status_code == status.HTTP_200_OK
+        assert response.data["id"] == collection.id
+        assert response.data["title"] == collection.title
