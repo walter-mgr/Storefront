@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "djoser",
+    "silk",
     "playground",
     "store",
     "tags",
@@ -78,6 +79,12 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if DEBUG:
+    MIDDLEWARE += [
+        "silk.middleware.SilkyMiddleware",
+    ]
+
 
 REST_FRAMEWORK = {
     "COERCE_DECIMAL_TO_STRING": False,
