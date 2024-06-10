@@ -8,6 +8,7 @@ from .tasks import notify_customers
 # from .tasks import hello
 
 from django.http import HttpResponse, JsonResponse
+import requests
 
 
 """
@@ -76,9 +77,17 @@ def say_hello(request):
     return render(request, "emails/email.html", {"name": "Walter"})
 """
 
-
+"""
 def say_hello(request):
 
     notify_customers.delay("Notify customers")
+
+    return render(request, "hello.html", {"name": "Walter"})
+"""
+
+
+def say_hello(request):
+
+    requests.get("https://httpbin.org/delay/2")
 
     return render(request, "hello.html", {"name": "Walter"})
