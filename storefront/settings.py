@@ -216,3 +216,14 @@ CELERY_BEAT_SCHEDULE = {
 # Optional settings from Celery docs
 CELERY_RESULT_BACKEND = "redis://localhost:6379"  # Replace with your Redis URL
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/2",
+        "TIMEOUT": 10 * 100,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
