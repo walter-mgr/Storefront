@@ -9,7 +9,11 @@ from .tasks import notify_customers
 
 from django.http import HttpResponse, JsonResponse
 
+# caching
 from django.core.cache import cache
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from rest_framework.views import APIView
 import requests
 
 
@@ -88,7 +92,9 @@ def say_hello(request):
 """
 
 
-# Caching
+# Caching views
+"""
+# One way:
 def say_hello(request):
 
     key = "httpbin_result"
@@ -98,3 +104,23 @@ def say_hello(request):
         cache.set(key, data)
 
     return render(request, "hello.html", {"name": cache.get(key)})
+"""
+# Caching view page
+
+"""
+# Use decorator
+@cache_page(5 * 60)
+def say_hello(request):
+    response = requests.get("https://httpbin.org/delay/2")
+    data = response.json()
+    return render(request, "hello.html", {"name": data})
+"""
+# Using classes
+
+
+class HelloCache(APIView):
+    @method_decorator(cache_page(5 * 60))
+    def get(self, request):
+        response = requests.get("https://httpbin.org/delay/2")
+        data = response.json()
+        return render(request, "hello.html", {"name": data})
