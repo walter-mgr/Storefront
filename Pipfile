@@ -19,7 +19,7 @@ celery = "*"
 flower = "*"
 django-redis = "*"
 whitenoise = "*"
-gunicorn = "*"
+waitress = "*"
 
 [dev-packages]
 pytest = "*"
