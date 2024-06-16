@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "669e3997d8770b0b91f3b4f9f94bd367d0fac9525c320ddc4fc301f0bcdfd94b"
+            "sha256": "811f1a91b5fb355796483689d05537e6497cdd6424e17b31a4b963b7e7f2bfa1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -393,6 +393,15 @@
             "markers": "python_version >= '3.7'",
             "version": "==2.0.1"
         },
+        "gunicorn": {
+            "hashes": [
+                "sha256:350679f91b24062c86e386e198a15438d53a7a8207235a78ba1b53df4c4378d9",
+                "sha256:4a0b436239ff76fb33f11c07a16482c521a7e09c1ce3cc293c2330afe01bec63"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.7'",
+            "version": "==22.0.0"
+        },
         "humanize": {
             "hashes": [
                 "sha256:582a265c931c683a7e9b8ed9559089dea7edcf6cc95be39a3cbc2c5d5ac2bcfa",
@@ -440,6 +449,14 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==3.2.2"
+        },
+        "packaging": {
+            "hashes": [
+                "sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002",
+                "sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==24.1"
         },
         "pillow": {
             "hashes": [
@@ -697,11 +714,11 @@
         },
         "autopep8": {
             "hashes": [
-                "sha256:05418a981f038969d8bdcd5636bf15948db7555ae944b9f79b5a34b35f1370d4",
-                "sha256:d306a0581163ac29908280ad557773a95a9bede072c0fafed6f141f5311f43c1"
+                "sha256:5cfe45eb3bef8662f6a3c7e28b7c0310c7310d340074b7f0f28f9810b44b7ef4",
+                "sha256:b716efa70cbafbf4a2c9c5ec1cabfa037a68f9e30b04c74ffa5864dd49b8f7d2"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==2.2.0"
+            "version": "==2.3.0"
         },
         "blinker": {
             "hashes": [
