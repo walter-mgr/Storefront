@@ -1,5 +1,9 @@
 config.py
 *.txt
 *.pyc
+*.log
+*.bak
+*.dat
+*.dir
 /media/
 /static/
