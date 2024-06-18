@@ -18,19 +18,11 @@ from celery.schedules import crontab
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-u8^@*9)nkrt!wp%am_#2lezf)$_(az+3nw2962m0!%kxmmds^)"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -72,6 +64,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -80,10 +73,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-if DEBUG:
-    MIDDLEWARE += [
-        "silk.middleware.SilkyMiddleware",
-    ]
+# if DEBUG:
+# MIDDLEWARE += ["silk.middleware.SilkyMiddleware"]
 
 
 REST_FRAMEWORK = {
@@ -102,6 +93,7 @@ DJOSER = {
         "current_user": "core.serializers.UserSerializer",
     }
 }
+
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
@@ -134,15 +126,7 @@ WSGI_APPLICATION = "storefront.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "storefront_db",
-        "HOST": "localhost",
-        "USER": "root",
-        "PASSWORD": SQL_PASSWORD,
-    }
-}
+# Moved to /storefront/settings/dev.py/
 
 
 # Password validation
@@ -227,4 +211,29 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
     }
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler", "formatter": "verbose"},
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": "general.log",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["console", "file"],
+            "level": os.environ.get("DJANGO_LOG_LEVEL", "INFO"),
+        }
+    },
+    "formatters": {
+        "verbose": {
+            "format": "{asctime} - ({levelname}) - {name} - {message}",
+            "style": "{",  # str.format
+        }
+    },
 }
