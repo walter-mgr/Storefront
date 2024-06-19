@@ -20,6 +20,7 @@ flower = "*"
 django-redis = "*"
 whitenoise = "*"
 waitress = "*"
+dj-database-url = "*"
 
 [dev-packages]
 pytest = "*"
