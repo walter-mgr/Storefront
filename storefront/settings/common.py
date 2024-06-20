@@ -178,11 +178,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://docs.djangoproject.com/en/5.0/topics/email/#obtaining-an-instance-of-an-email-backend
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-from-email
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "localhost"
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
-EMAIL_PORT = 2525
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+
 DEFAULT_FROM_EMAIL = "from@dev.com"
 
 ADMINS = [("Admin", "fake.admin@dev.com")]
