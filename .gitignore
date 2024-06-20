@@ -9,3 +9,4 @@ dev.py
 /media/
 /static/
 __pycache__/
+db.sqlite3
