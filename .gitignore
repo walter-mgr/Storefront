@@ -8,3 +8,4 @@ dev.py
 *.dir
 /media/
 /static/
+__pycache__/
