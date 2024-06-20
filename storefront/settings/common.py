@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
-from config import SQL_PASSWORD
+
+# from config import SQL_PASSWORD
 from datetime import timedelta
 from celery.schedules import crontab
 
