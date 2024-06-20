@@ -21,6 +21,7 @@ django-redis = "*"
 whitenoise = "*"
 waitress = "*"
 dj-database-url = "*"
+django-silk = "*"
 
 [dev-packages]
 pytest = "*"
