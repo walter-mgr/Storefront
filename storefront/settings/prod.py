@@ -8,6 +8,8 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 ALLOWED_HOSTS = ["buy-store-prod-17b181031b24.herokuapp.com"]
 
+DATABASE_URL = os.environ["HEROKU_POSTGRESQL_PINK_URL"]
+
 DATABASES = {"default": dj_database_url.config()}
 
 REDIS_URL = os.environ["REDIS_URL"]
