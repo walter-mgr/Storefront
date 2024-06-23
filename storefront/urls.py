@@ -29,7 +29,7 @@ admin.site.site_header = "Storefront Admin"
 admin.site.index_title = "Admin"
 
 urlpatterns = [
-    path("favicon.ico", RedirectView.as_view(url="/static/images/favicon.ico")),
+    path("favicon.ico", RedirectView.as_view(url="/static/favicon_io/favicon.ico")),
     path("", include("core.urls")),
     path("admin/", admin.site.urls),
     path("store/", include("store.urls")),
